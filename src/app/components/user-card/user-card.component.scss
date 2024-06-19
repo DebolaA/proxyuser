@@ -1,0 +1,44 @@
+@import "../../shared/variable";
+
+.user {
+  margin-bottom: 20px;
+  width: 300px;
+  height: 200px;
+
+  &-card {
+    border: 1px solid $primary;
+    border-radius: 5px;
+
+    &-header {
+      padding: 5px;
+      display: flex;
+      justify-content: flex-end;
+
+      .delete-btn,
+      .edit-btn {
+        padding: 2px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .delete-btn {
+        padding: 10px;
+        margin-right: 5px;
+      }
+    }
+
+    &-body {
+      padding: 5px;
+
+      p {
+        margin-bottom: 5px;
+      }
+    }
+  }
+}

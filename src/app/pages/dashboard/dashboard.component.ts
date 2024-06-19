@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, catchError, of } from 'rxjs';
+import { BehaviorSubject, catchError, filter, map, of } from 'rxjs';
 import { IUser } from 'src/app/model/user.dt';
 import { EndpointService } from 'src/app/services/endpoint.service';
 import { UnSub } from 'src/app/utils/unsubscribe';
@@ -40,5 +40,17 @@ export class DashboardComponent extends UnSub implements OnInit {
       });
   }
 
-  deleteUser(user: IUser): void {}
+  deleteUser(user: IUser): void {
+    this.userList$ = this.userList$.pipe(
+      map((users: IUser[]) => {
+        return users.filter(
+          (selectedUser: IUser) => selectedUser.id !== user.id
+        );
+      }),
+      catchError((error) => {
+        this.errorMessageSubject.next(error);
+        return of([]);
+      })
+    );
+  }
 }
