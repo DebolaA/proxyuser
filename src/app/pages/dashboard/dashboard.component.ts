@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BehaviorSubject, catchError, of } from 'rxjs';
 import { IUser } from 'src/app/model/user.dt';
 import { EndpointService } from 'src/app/services/endpoint.service';
 import { UnSub } from 'src/app/utils/unsubscribe';
@@ -9,14 +10,33 @@ import { UnSub } from 'src/app/utils/unsubscribe';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent extends UnSub implements OnInit {
-  userList: IUser[] = [];
+  errorMessageSubject = new BehaviorSubject<string>('');
+  errorMessageAction$ = this.errorMessageSubject.asObservable();
+
+  userList = new BehaviorSubject<IUser[]>([]);
+  userList$ = this.endpointService.getUsers();
   constructor(private endpointService: EndpointService) {
     super();
   }
 
   ngOnInit(): void {
-    this.endpointService.getUsers().subscribe((data: IUser[]) => {
-      this.userList = data;
-    });
+    this.getAllUsers();
+  }
+
+  getAllUsers() {
+    this.userList$
+      .pipe(
+        catchError((error) => {
+          this.errorMessageSubject.next(error);
+          return of([]);
+        })
+      )
+      .subscribe({
+        next: (users: IUser[]) => {
+          console.log(users);
+          this.userList.next(users);
+        },
+        error: (error: any) => console.log(error),
+      });
   }
 }
