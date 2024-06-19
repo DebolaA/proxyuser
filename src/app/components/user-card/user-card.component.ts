@@ -19,16 +19,7 @@ export class UserCardComponent implements OnInit {
   }
 
   editUser(event: Event) {
-    const target = (event.target as Element).className;
-    if (
-      target &&
-      typeof target === 'string' &&
-      !(
-        target === 'fun-fact-item-delete-btn' ||
-        target === 'fun-fact-item-edit-btn'
-      )
-    ) {
-      this.router.navigate(['/fact', this.user?.id]);
-    }
+    // const target = (event.target as Element).className;
+    this.router.navigate(['/edit-user', this.user?.id]);
   }
 }

@@ -21,6 +21,13 @@ const routes: Routes = [
         (mod) => mod.EditUserModule
       ),
   },
+  {
+    path: 'add-user/:id',
+    loadChildren: () =>
+      import('./pages/create-user/create-user.module').then(
+        (mod) => mod.CreateUserModule
+      ),
+  },
 ];
 
 @NgModule({

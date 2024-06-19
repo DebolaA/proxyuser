@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, catchError, map, throwError, BehaviorSubject } from 'rxjs';
 import { environment as env } from 'src/environments/environment';
 import { IUser } from '../model/user.dt';
 
@@ -8,6 +8,8 @@ import { IUser } from '../model/user.dt';
   providedIn: 'root',
 })
 export class EndpointService {
+  userList$ = new BehaviorSubject<IUser[]>([]);
+
   constructor(private http: HttpClient) {}
 
   getUsers(): Observable<IUser[]> {
@@ -18,6 +20,19 @@ export class EndpointService {
       }),
       catchError(this.handleError)
     );
+  }
+
+  createUser(user: IUser): void {
+    let userList: IUser[] = [];
+    if (user) {
+      this.userList$.subscribe((data: IUser[]) => {
+        userList = data;
+        userList.push(user);
+        this.userList$.next(userList);
+        return true;
+      }),
+        catchError(this.handleError);
+    }
   }
 
   handleError(error: Error) {

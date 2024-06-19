@@ -24,7 +24,7 @@ export class DashboardComponent extends UnSub implements OnInit {
   }
 
   getAllUsers() {
-    this.userList$
+    this.endpointService.userList$
       .pipe(
         catchError((error) => {
           this.errorMessageSubject.next(error);
@@ -33,7 +33,7 @@ export class DashboardComponent extends UnSub implements OnInit {
       )
       .subscribe({
         next: (users: IUser[]) => {
-          console.log(users);
+          // console.log(users);
           this.userList.next(users);
         },
         error: (error: any) => console.log(error),
