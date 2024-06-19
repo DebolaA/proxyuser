@@ -39,4 +39,6 @@ export class DashboardComponent extends UnSub implements OnInit {
         error: (error: any) => console.log(error),
       });
   }
+
+  deleteUser(user: IUser): void {}
 }

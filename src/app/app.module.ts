@@ -13,7 +13,7 @@ import {
 import { HttpRequestInterceptor } from './interceptor/http-request.interceptor';
 
 @NgModule({
-  declarations: [AppComponent, UserCardComponent],
+  declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [
     EndpointService,
