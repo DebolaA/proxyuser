@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, catchError, map, throwError, BehaviorSubject } from 'rxjs';
+import {
+  Observable,
+  catchError,
+  map,
+  throwError,
+  BehaviorSubject,
+  of,
+} from 'rxjs';
 import { environment as env } from 'src/environments/environment';
 import { IUser } from '../model/user.dt';
 
@@ -22,16 +29,19 @@ export class EndpointService {
     );
   }
 
-  createUser(user: IUser): void {
+  createUser(user: IUser): Observable<boolean> {
     let userList: IUser[] = [];
     if (user) {
       this.userList$.subscribe((data: IUser[]) => {
         userList = data;
         userList.push(user);
         this.userList$.next(userList);
-        return true;
+        return of(true);
       }),
-        catchError(this.handleError);
+        catchError((err) => {
+          console.error(err);
+          return of(false);
+        });
     }
   }
 
