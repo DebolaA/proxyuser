@@ -1,3 +1,4 @@
+import { IUser } from './../model/user.dt';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import {
@@ -9,7 +10,6 @@ import {
   of,
 } from 'rxjs';
 import { environment as env } from 'src/environments/environment';
-import { IUser } from '../model/user.dt';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +35,16 @@ export class EndpointService {
     if (user) {
       userList.push(user);
       this.userList$.next(userList);
+      return of(true);
+    }
+    return of(false);
+  }
+
+  deleteUser(user: IUser): Observable<boolean> {
+    let userList: IUser[] = this.userList$.value;
+    if (user) {
+      const newList = userList.filter((x: IUser) => x.id !== user.id);
+      this.userList$.next(newList);
       return of(true);
     }
     return of(false);

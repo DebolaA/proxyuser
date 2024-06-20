@@ -40,23 +40,25 @@ export class DashboardComponent extends UnSub implements OnInit {
       });
   }
 
-  deleteUser(user: IUser): void {
-    this.dashboardUserList$
+  deleteUser(user: IUser) {
+    this.endpointService
+      .deleteUser(user)
       .pipe(
         catchError((error) => {
           this.errorMessageSubject.next(error);
           return of([]);
         })
       )
-      .subscribe({
-        next: (users: IUser[]) => {
-          const res: IUser[] = users.filter(
-            (selectedUser: IUser) => selectedUser.id !== user.id
-          );
-          this.endpointService.userList$.next(res);
-        },
-        error: (error: any) =>
-          this.errorMessageSubject.next('Unable to delete User'),
-      });
+      .subscribe
+      //   {
+      //   next: (res: boolean) => {
+      //     if (res) this.errorMessageSubject.next('Successfully deleted user');
+      //     else this.errorMessageSubject.next('Unable to delete user');
+      //   },
+      //   error: (error: any) => {
+      //     this.errorMessageSubject.next('Unable to delete User');
+      //   },
+      // }
+      ();
   }
 }

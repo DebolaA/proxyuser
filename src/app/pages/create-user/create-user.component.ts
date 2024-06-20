@@ -18,14 +18,11 @@ export class CreateUserComponent implements OnInit {
   user: IUser | undefined;
 
   userForm: FormGroup = new FormGroup({
-    username: new FormControl('hello', [Validators.required]),
-    name: new FormControl('hello', [Validators.required]),
-    email: new FormControl('hello@email.com', [
-      Validators.required,
-      Validators.email,
-    ]),
-    city: new FormControl('limpopo', [Validators.required]),
-    zipcode: new FormControl('xp123', [Validators.required]),
+    username: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    city: new FormControl('', [Validators.required]),
+    zipcode: new FormControl('', [Validators.required]),
   });
 
   constructor(
@@ -58,5 +55,13 @@ export class CreateUserComponent implements OnInit {
     });
   }
 
-  resetUserForm() {}
+  resetUserForm() {
+    this.userForm = new FormGroup({
+      username: new FormControl('', [Validators.required]),
+      name: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      city: new FormControl('', [Validators.required]),
+      zipcode: new FormControl('', [Validators.required]),
+    });
+  }
 }
