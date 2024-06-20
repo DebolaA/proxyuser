@@ -33,7 +33,6 @@ export class DashboardComponent extends UnSub implements OnInit {
       )
       .subscribe({
         next: (users: IUser[]) => {
-          console.log(users);
           this.dashboardUserList.next(users);
         },
         error: (error: any) => console.log(error),
@@ -41,24 +40,14 @@ export class DashboardComponent extends UnSub implements OnInit {
   }
 
   deleteUser(user: IUser) {
-    this.endpointService
-      .deleteUser(user)
-      .pipe(
-        catchError((error) => {
-          this.errorMessageSubject.next(error);
-          return of([]);
-        })
-      )
-      .subscribe
-      //   {
-      //   next: (res: boolean) => {
-      //     if (res) this.errorMessageSubject.next('Successfully deleted user');
-      //     else this.errorMessageSubject.next('Unable to delete user');
-      //   },
-      //   error: (error: any) => {
-      //     this.errorMessageSubject.next('Unable to delete User');
-      //   },
-      // }
-      ();
+    this.endpointService.deleteUser(user).subscribe({
+      next: (res: boolean) => {
+        if (res) this.errorMessageSubject.next('Successfully deleted user');
+        else this.errorMessageSubject.next('Unable to delete user');
+      },
+      error: (error: any) => {
+        this.errorMessageSubject.next('Unable to delete User');
+      },
+    });
   }
 }

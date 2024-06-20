@@ -1,14 +1,7 @@
 import { IUser } from './../model/user.dt';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import {
-  Observable,
-  catchError,
-  map,
-  throwError,
-  BehaviorSubject,
-  of,
-} from 'rxjs';
+import { Observable, catchError, throwError, BehaviorSubject, of } from 'rxjs';
 import { environment as env } from 'src/environments/environment';
 
 @Injectable({
@@ -30,6 +23,13 @@ export class EndpointService {
       });
   }
 
+  getUserWithId(id: number): Observable<IUser | null> {
+    const list: IUser[] = this.userList$.value;
+    const index = list.findIndex((x) => x.id === id);
+    if (index > -1) return of(list[index]);
+    else return of(null);
+  }
+
   createUser(user: IUser): Observable<boolean> {
     let userList: IUser[] = this.userList$.value;
     if (user) {
@@ -45,6 +45,17 @@ export class EndpointService {
     if (user) {
       const newList = userList.filter((x: IUser) => x.id !== user.id);
       this.userList$.next(newList);
+      return of(true);
+    }
+    return of(false);
+  }
+
+  updateUser(user: IUser): Observable<boolean> {
+    let userList: IUser[] = this.userList$.value;
+    if (user) {
+      const index = userList.findIndex((x: IUser) => x.id === user.id);
+      if (index > -1) userList[index] = user;
+      this.userList$.next(userList);
       return of(true);
     }
     return of(false);

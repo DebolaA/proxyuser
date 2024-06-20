@@ -74,7 +74,8 @@ label {
   }
 }
 
-p.error {
+p.error,
+div.error-message {
   color: red;
   padding-bottom: 10px;
 }
