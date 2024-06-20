@@ -13,8 +13,8 @@ export class DashboardComponent extends UnSub implements OnInit {
   errorMessageSubject = new BehaviorSubject<string>('');
   errorMessageAction$ = this.errorMessageSubject.asObservable();
 
-  userList = new BehaviorSubject<IUser[]>([]);
-  userList$ = this.endpointService.getUsers();
+  dashboardUserList = new BehaviorSubject<IUser[]>([]);
+  dashboardUserList$ = this.dashboardUserList.asObservable();
   constructor(private endpointService: EndpointService) {
     super();
   }
@@ -33,24 +33,30 @@ export class DashboardComponent extends UnSub implements OnInit {
       )
       .subscribe({
         next: (users: IUser[]) => {
-          // console.log(users);
-          this.userList.next(users);
+          console.log(users);
+          this.dashboardUserList.next(users);
         },
         error: (error: any) => console.log(error),
       });
   }
 
   deleteUser(user: IUser): void {
-    this.userList$ = this.userList$.pipe(
-      map((users: IUser[]) => {
-        return users.filter(
-          (selectedUser: IUser) => selectedUser.id !== user.id
-        );
-      }),
-      catchError((error) => {
-        this.errorMessageSubject.next(error);
-        return of([]);
-      })
-    );
+    this.dashboardUserList$
+      .pipe(
+        catchError((error) => {
+          this.errorMessageSubject.next(error);
+          return of([]);
+        })
+      )
+      .subscribe({
+        next: (users: IUser[]) => {
+          const res: IUser[] = users.filter(
+            (selectedUser: IUser) => selectedUser.id !== user.id
+          );
+          this.endpointService.userList$.next(res);
+        },
+        error: (error: any) =>
+          this.errorMessageSubject.next('Unable to delete User'),
+      });
   }
 }

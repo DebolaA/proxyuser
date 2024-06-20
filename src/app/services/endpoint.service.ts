@@ -19,30 +19,31 @@ export class EndpointService {
 
   constructor(private http: HttpClient) {}
 
-  getUsers(): Observable<IUser[]> {
-    return this.http.get<IUser[]>(`${env.BASE_URL}users`).pipe(
-      map((data: IUser[]) => {
-        console.log(data);
-        return data;
-      }),
-      catchError(this.handleError)
-    );
+  getUsers(): void {
+    this.http
+      .get<IUser[]>(`${env.BASE_URL}users`)
+      .pipe(catchError(this.handleError))
+      .subscribe({
+        next: (data: IUser[]) => {
+          this.userList$.next(data);
+        },
+      });
   }
 
   createUser(user: IUser): Observable<boolean> {
-    let userList: IUser[] = [];
+    let userList: IUser[] = this.userList$.value;
     if (user) {
-      this.userList$.subscribe((data: IUser[]) => {
-        userList = data;
-        userList.push(user);
-        this.userList$.next(userList);
-        return of(true);
-      }),
-        catchError((err) => {
-          console.error(err);
-          return of(false);
-        });
+      userList.push(user);
+      this.userList$.next(userList);
+      return of(true);
     }
+    return of(false);
+  }
+
+  getArrayLength(): number {
+    const list = this.userList$.value;
+    if (list && list.length) return list.length;
+    else return 0;
   }
 
   handleError(error: Error) {

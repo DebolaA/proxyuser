@@ -22,7 +22,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'add-user/:id',
+    path: 'add-user',
     loadChildren: () =>
       import('./pages/create-user/create-user.module').then(
         (mod) => mod.CreateUserModule

@@ -18,10 +18,14 @@ export class CreateUserComponent implements OnInit {
   user: IUser | undefined;
 
   userForm: FormGroup = new FormGroup({
-    username: new FormControl('', [Validators.required]),
-    name: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    addres: new FormControl(null),
+    username: new FormControl('hello', [Validators.required]),
+    name: new FormControl('hello', [Validators.required]),
+    email: new FormControl('hello@email.com', [
+      Validators.required,
+      Validators.email,
+    ]),
+    city: new FormControl('limpopo', [Validators.required]),
+    zipcode: new FormControl('xp123', [Validators.required]),
   });
 
   constructor(
@@ -31,8 +35,21 @@ export class CreateUserComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onSubmit(user: IUser) {
-    this.endpointService.createUser(user).subscribe({
+  onSubmit() {
+    const user = this.userForm.value;
+    const newUser: IUser = {
+      id: this.endpointService.getArrayLength() + 1,
+      name: user.name,
+      username: user.username,
+      email: user.email,
+      address: {
+        city: user.city,
+        street: '',
+        suite: '',
+        zipcode: user.zipcode,
+      },
+    };
+    this.endpointService.createUser(newUser).subscribe({
       next: (res: boolean) => {
         if (res) this.router.navigate(['/dashboard']);
         else this.messageSubject.next('Cannot create new user');
@@ -40,4 +57,6 @@ export class CreateUserComponent implements OnInit {
       error: (error: any) => this.messageSubject.next(error.message),
     });
   }
+
+  resetUserForm() {}
 }
