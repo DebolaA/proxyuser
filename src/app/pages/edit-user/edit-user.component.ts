@@ -31,7 +31,7 @@ export class EditUserComponent implements OnInit {
     private router: Router,
     private endpointService: EndpointService
   ) {
-    this.paramSub = this.route.params.subscribe((params) => {
+    this.paramSub = this.route.params.subscribe((params: any) => {
       const id: number | undefined = params
         ? parseInt(params['id'])
         : undefined;
