@@ -2,7 +2,7 @@ import { IUser } from './../model/user.dt';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, catchError, throwError, BehaviorSubject, of } from 'rxjs';
-import { environment as env } from 'src/environments/environment';
+import { environment as env } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -12,15 +12,10 @@ export class EndpointService {
 
   constructor(private http: HttpClient) {}
 
-  getUsers(): void {
-    this.http
+  getUsers(): Observable<IUser[]> {
+    return this.http
       .get<IUser[]>(`${env.BASE_URL}users`)
-      .pipe(catchError(this.handleError))
-      .subscribe({
-        next: (data: IUser[]) => {
-          this.userList$.next(data);
-        },
-      });
+      .pipe(catchError(this.handleError));
   }
 
   getUserWithId(id: number): Observable<IUser | null> {
@@ -55,7 +50,7 @@ export class EndpointService {
     if (user) {
       const index = userList.findIndex((x: IUser) => x.id === user.id);
       if (index > -1) userList[index] = user;
-      this.userList$.next(userList);
+      // this.userList$.next(userList);
       return of(true);
     }
     return of(false);

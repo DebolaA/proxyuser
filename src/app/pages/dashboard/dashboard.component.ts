@@ -33,6 +33,7 @@ export class DashboardComponent extends UnSub implements OnInit {
       )
       .subscribe({
         next: (users: IUser[]) => {
+          // this.endpointService.userList$.next(users);
           this.dashboardUserList.next(users);
         },
         error: (error: any) => console.log(error),
