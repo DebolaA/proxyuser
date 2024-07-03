@@ -50,7 +50,7 @@ export class EndpointService {
     if (user) {
       const index = userList.findIndex((x: IUser) => x.id === user.id);
       if (index > -1) userList[index] = user;
-      // this.userList$.next(userList);
+      this.userList$.next(userList);
       return of(true);
     }
     return of(false);

@@ -3,14 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { UserCardComponent } from './components/user-card/user-card.component';
 import { EndpointService } from './services/endpoint.service';
-import {
-  HTTP_INTERCEPTORS,
-  HttpClientModule,
-  HttpRequest,
-} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpRequestInterceptor } from './interceptor/http-request.interceptor';
+import { HttpResponseInterceptor } from './interceptor/http-response.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +20,7 @@ import { HttpRequestInterceptor } from './interceptor/http-request.interceptor';
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: HttpRequestInterceptor,
+      useClass: HttpResponseInterceptor,
       multi: true,
     },
   ],

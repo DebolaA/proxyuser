@@ -28,6 +28,10 @@ const routes: Routes = [
         (mod) => mod.CreateUserModule
       ),
   },
+  {
+    path: '**',
+    redirectTo: 'dashboard',
+  },
 ];
 
 @NgModule({

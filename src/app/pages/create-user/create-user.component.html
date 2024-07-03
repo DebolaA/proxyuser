@@ -10,7 +10,15 @@
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
     <div class="row">
       <label for="name"><b>Name</b></label>
-      <p *ngIf="userForm.get('name')?.invalid" class="error">Required</p>
+      <p
+        *ngIf="
+          (userForm.get('name')?.invalid && userForm.get('name')?.dirty) ||
+          userForm.get('name')?.touched
+        "
+        class="error"
+      >
+        Required
+      </p>
       <input
         type="text"
         id="name"
@@ -18,8 +26,8 @@
         formControlName="name"
         [ngClass]="{
           error:
-            userForm.get('name')?.invalid &&
-            (userForm.get('name')?.dirty || userForm.get('name')?.touched)
+            (userForm.get('name')?.invalid && userForm.get('name')?.dirty) ||
+            userForm.get('name')?.touched
         }"
       />
     </div>
