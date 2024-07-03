@@ -33,7 +33,15 @@
     </div>
     <div class="row">
       <label for="username"><b>Username</b></label>
-      <p *ngIf="userForm.get('username')?.invalid" class="error">Required</p>
+      <p
+        *ngIf="
+          userForm.get('username')?.invalid &&
+          (userForm.get('username')?.dirty || userForm.get('username')?.touched)
+        "
+        class="error"
+      >
+        Required
+      </p>
       <input
         type="text"
         id="username"
@@ -49,7 +57,15 @@
     </div>
     <div class="row">
       <label for="email"><b>Email</b></label>
-      <p *ngIf="userForm.get('email')?.invalid" class="error">Required</p>
+      <p
+        *ngIf="
+          userForm.get('email')?.invalid &&
+          (userForm.get('email')?.dirty || userForm.get('email')?.touched)
+        "
+        class="error"
+      >
+        Required
+      </p>
       <input
         type="text"
         id="email"
@@ -64,7 +80,15 @@
     </div>
     <div class="row">
       <label for="city"><b>City</b></label>
-      <p *ngIf="userForm.get('city')?.invalid" class="error">Required</p>
+      <p
+        *ngIf="
+          userForm.get('city')?.invalid &&
+          (userForm.get('city')?.dirty || userForm.get('city')?.touched)
+        "
+        class="error"
+      >
+        Required
+      </p>
       <input
         type="text"
         id="city"
@@ -79,7 +103,15 @@
     </div>
     <div class="row">
       <label for="zipcode"><b>Zipcode</b></label>
-      <p *ngIf="userForm.get('zipcode')?.invalid" class="error">Required</p>
+      <p
+        *ngIf="
+          userForm.get('zipcode')?.invalid &&
+          (userForm.get('zipcode')?.dirty || userForm.get('zipcode')?.touched)
+        "
+        class="error"
+      >
+        Required
+      </p>
       <input
         type="text"
         id="zipcode"
